@@ -1,0 +1,49 @@
+{
+  "name": "react-frappe-gantt",
+  "version": "0.2.3",
+  "license": "MIT",
+  "main": "./dist/bundle.cjs",
+  "author": {
+    "name": "Steven Guerrero",
+    "email": "stephenguerrero43@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Soremwar/react-frappe-gantt"
+  },
+  "bugs": {
+    "url": "https://github.com/Soremwar/react-frappe-gantt/issues"
+  },
+  "keywords": [
+    "react",
+    "frappe gantt wrapper",
+    "gantt",
+    "svg",
+    "simple gantt",
+    "project timeline",
+    "interactive gantt",
+    "project management"
+  ],
+  "dependencies": {
+    "frappe-gantt": "0.5.0",
+    "moment": "^2.24.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/preset-env": "^7.12.13",
+    "@babel/preset-react": "^7.12.13",
+    "rollup": "^2.38.5",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-postcss": "^4.0.0"
+  }
+}
