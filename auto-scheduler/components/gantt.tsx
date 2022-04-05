@@ -5,6 +5,7 @@ const Gantt = () => {
     function daysToMilliseconds(days: number) {
         return days * 24 * 60 * 60 * 1000;
       }
+    //   各タスクに必要な項目
       const columns = [
         { type: "string", label: "Task ID" },
         { type: "string", label: "Task Name" },
@@ -15,6 +16,7 @@ const Gantt = () => {
         { type: "string", label: "Dependencies" }
       ];
       
+    //   各タスクの情報
       const rows = [
         [
           "Research",
@@ -80,7 +82,6 @@ const Gantt = () => {
           );
         }
       }
-      
       return <Gantt />;
 }
 
