@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import TableView from './tableView/tableVIew'
 
 const Home: NextPage = () => {
   return (
@@ -51,6 +52,7 @@ const Home: NextPage = () => {
             </p>
           </a>
         </div>
+        <TableView/>
       </main>
 
       <footer className={styles.footer}>
