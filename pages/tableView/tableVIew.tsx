@@ -8,7 +8,8 @@ const TableView: NextPage = () => {
     <table className="table-auto">
       <thead className='bg-gray-300'>
         <tr>
-          <th colSpan={5} className="border border-gray-500">
+          <th colSpan={5} className="border border-gray-500 text-left">
+            <button className='mr-2'>←</button>
             <button className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded">プロジェクト追加＋</button>
           </th>
         </tr>
@@ -22,14 +23,28 @@ const TableView: NextPage = () => {
       </thead>
       <tbody>
         {data.map(d => (
-          <tr>
-            <td className="border border-gray-500"></td>
-            <td className="border border-gray-500">{d.subject}</td>
-            <td className="border border-gray-500">{d.start}</td>
-            <td className="border border-gray-500">{d.end}</td>
-            <td className="border border-gray-500"></td>
+          d.projectA.map((a, index) => (
+            <tr className="text-center">
+              <td className="border border-gray-500">{index + 1}</td>
+              <td className="border border-gray-500">
+                <input type="checkbox"/>
+                <span>{a.subject}</span>
+              </td>
+              <td className="border border-gray-500">{a.start}</td>
+              <td className="border border-gray-500">{a.end}</td>
+              <td className="border border-gray-500"></td>
             </tr>
+          ))
         ))}
+        <tr>
+          <td className="border border-gray-500"></td>
+          <td className="border border-gray-500">
+            <button className="text-blue-500">タスク追加</button>
+          </td>
+          <td className="border border-gray-500"></td>
+          <td className="border border-gray-500"></td>
+          <td className="border border-gray-500"></td>
+        </tr>
       </tbody>
     </table>
   )
