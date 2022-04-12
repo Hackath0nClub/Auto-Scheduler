@@ -53,7 +53,7 @@ const Home: NextPage = () => {
         onTasksChange={(tasks) => console.log(tasks, "tasks")}
       />
     </div>
-  );A
+  );
 }
 
 export default Home
