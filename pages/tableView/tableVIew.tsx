@@ -1,5 +1,7 @@
 import type { NextPage } from 'next';
-import tableStyles from '../../styles/table.module.scss'
+import React from 'react';
+import tableStyles from '../../styles/table.module.scss';
+import { data } from './testData';
 
 const TableView: NextPage = () => {
   return (
@@ -19,13 +21,15 @@ const TableView: NextPage = () => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td className="border border-gray-500"></td>
-          <td className="border border-gray-500"></td>
-          <td className="border border-gray-500"></td>
-          <td className="border border-gray-500"></td>
-          <td className="border border-gray-500"></td>
-        </tr>
+        {data.map(d => (
+          <tr>
+            <td className="border border-gray-500"></td>
+            <td className="border border-gray-500">{d.subject}</td>
+            <td className="border border-gray-500">{d.start}</td>
+            <td className="border border-gray-500">{d.end}</td>
+            <td className="border border-gray-500"></td>
+            </tr>
+        ))}
       </tbody>
     </table>
   )
