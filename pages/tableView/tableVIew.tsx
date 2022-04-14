@@ -24,7 +24,7 @@ const TableView: NextPage = () => {
       <tbody>
         {data.map((d, index) => (
           <React.Fragment>
-            <tr>
+            <tr className="text-center">
               <td className="border border-gray-500">{d.name}{index}</td>
               <td className="border border-gray-500">↓{d.name}</td>
               <td className="border border-gray-500">{d.startDate}</td>
