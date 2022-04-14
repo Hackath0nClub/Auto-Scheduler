@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import React from 'react';
-import tableStyles from '../../styles/table.module.scss';
+import tableStyles from '../styles/table.module.scss';
 import { data } from '../repositories/tableTestData';
 
 const TableView: NextPage = () => {
@@ -23,7 +23,7 @@ const TableView: NextPage = () => {
       </thead>
       <tbody>
         {data.map((d, index) => (
-          <React.Fragment key="th">
+          <React.Fragment key={d.id}>
             <tr className="text-center">
               <th className="border border-gray-500">{d.name}{index}</th>
               <th className="border border-gray-500">↓{d.name}</th>
@@ -31,31 +31,29 @@ const TableView: NextPage = () => {
               <th className="border border-gray-500">{d.endDate}</th>
               <th className="border border-gray-500"></th>
             </tr>
-            <React.Fragment>
-              {d.projectRow.map((a, rowIndex) => (
-                <tr className="text-center" key="td">
-                  <td className="border border-gray-500">{d.name}{index + rowIndex + 1}</td>
-                  <td className="border border-gray-500">
-                    <input type="checkbox"/>
-                    <span>{a.subject}</span>
-                  </td>
-                  <td className="border border-gray-500">{a.start}</td>
-                  <td className="border border-gray-500">{a.end}</td>
-                  <td className="border border-gray-500"></td>
-                </tr>
-              ))}
-            </React.Fragment>
+            {d.projectRow.map((a, rowIndex) => (
+              <tr className="text-center" key={a.taskId}>
+                <td className="border border-gray-500">{d.name}{index + rowIndex + 1}</td>
+                <td className="border border-gray-500">
+                  <input type="checkbox"/>
+                  <span>{a.subject}</span>
+                </td>
+                <td className="border border-gray-500">{a.start}</td>
+                <td className="border border-gray-500">{a.end}</td>
+                <td className="border border-gray-500"></td>
+              </tr>
+            ))}
+            <tr>
+              <td className="border border-gray-500"></td>
+              <td className="border border-gray-500">
+                <button className="text-blue-500">タスク追加＋</button>
+              </td>
+              <td className="border border-gray-500"></td>
+              <td className="border border-gray-500"></td>
+              <td className="border border-gray-500"></td>
+            </tr>
           </React.Fragment>
         ))}
-        <tr>
-          <td className="border border-gray-500"></td>
-          <td className="border border-gray-500">
-            <button className="text-blue-500">タスク追加＋</button>
-          </td>
-          <td className="border border-gray-500"></td>
-          <td className="border border-gray-500"></td>
-          <td className="border border-gray-500"></td>
-        </tr>
       </tbody>
     </table>
   )
