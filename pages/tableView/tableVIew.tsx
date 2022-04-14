@@ -23,17 +23,17 @@ const TableView: NextPage = () => {
       </thead>
       <tbody>
         {data.map((d, index) => (
-          <React.Fragment>
+          <React.Fragment key="th">
             <tr className="text-center">
-              <td className="border border-gray-500">{d.name}{index}</td>
-              <td className="border border-gray-500">↓{d.name}</td>
-              <td className="border border-gray-500">{d.startDate}</td>
-              <td className="border border-gray-500">{d.endDate}</td>
-              <td className="border border-gray-500"></td>
+              <th className="border border-gray-500">{d.name}{index}</th>
+              <th className="border border-gray-500">↓{d.name}</th>
+              <th className="border border-gray-500">{d.startDate}</th>
+              <th className="border border-gray-500">{d.endDate}</th>
+              <th className="border border-gray-500"></th>
             </tr>
             <React.Fragment>
               {d.projectRow.map((a, rowIndex) => (
-                <tr className="text-center">
+                <tr className="text-center" key="td">
                   <td className="border border-gray-500">{d.name}{index + rowIndex + 1}</td>
                   <td className="border border-gray-500">
                     <input type="checkbox"/>
