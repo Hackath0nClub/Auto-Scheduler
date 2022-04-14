@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import React from 'react';
 import tableStyles from '../../styles/table.module.scss';
-import { data } from './testData';
+import { data } from '../repositories/tableTestData';
 
 const TableView: NextPage = () => {
   return (
