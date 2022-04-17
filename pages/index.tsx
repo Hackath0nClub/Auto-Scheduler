@@ -1,9 +1,11 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import TableView from '../components/tableVIew'
-import Gantt from "../components/Gantt"
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import TableView from "../components/tableVIew";
+import Gantt from "../components/Gantt";
+import { ScheduleDataContext } from "../components/scheduleDataProvider";
+import { tasks } from "../repositories/testData";
 
 const Home: NextPage = () => {
   return (
@@ -15,11 +17,13 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <TableView/>
-        <Gantt />
+        <ScheduleDataContext.Provider value={tasks}>
+          <TableView />
+          <Gantt />
+        </ScheduleDataContext.Provider>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
