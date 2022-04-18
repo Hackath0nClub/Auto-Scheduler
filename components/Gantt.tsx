@@ -1,10 +1,9 @@
 import type { NextPage } from "next";
 import { FrappeGantt } from "frappe-gantt-react";
-import { projects } from "../repositories/testData";
 import React, { useContext } from "react";
 import { ScheduleDataContext } from "./scheduleDataProvider";
 
-const Home: NextPage = () => {
+const Gantt: NextPage = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
   console.log(scheduleData);
 
@@ -13,11 +12,9 @@ const Home: NextPage = () => {
       {scheduleData.map((project: any) => (
         <FrappeGantt
           key={project.id}
-          // tasks={tasks}
           tasks={project.tasks}
           // viewMode={this.state.mode}
           onClick={(task) => console.log(task, "click")}
-          // onClick={() => setScheduleData(tasks2)}
           onDateChange={(task, start, end) =>
             console.log(task, start, end, "date")
           }
@@ -31,4 +28,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Gantt;
