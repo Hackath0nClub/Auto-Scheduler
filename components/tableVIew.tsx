@@ -1,9 +1,11 @@
 import type { NextPage } from "next";
-import React from "react";
+import React, { useContext } from "react";
 import tableStyles from "../styles/table.module.scss";
-import { projects } from "../repositories/testData";
+import { ScheduleDataContext } from "./scheduleDataProvider";
 
 const TableView: NextPage = () => {
+  const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
+
   return (
     <table className="table-auto">
       <thead className="bg-gray-300">
@@ -24,33 +26,33 @@ const TableView: NextPage = () => {
         </tr>
       </thead>
       <tbody>
-        {projects.map((d: any, index: any) => (
-          <React.Fragment key={d.id}>
+        {scheduleData.map((project: any, index: any) => (
+          <React.Fragment key={project.id}>
             <tr className="text-center">
               <th className="border border-gray-500">
-                {d.name}
+                {project.name}
                 {index}
               </th>
-              <th className="border border-gray-500">↓{d.name}</th>
-              <th className="border border-gray-500">{d.startDate}</th>
-              <th className="border border-gray-500">{d.endDate}</th>
+              <th className="border border-gray-500">↓{project.name}</th>
+              <th className="border border-gray-500">{project.startDate}</th>
+              <th className="border border-gray-500">{project.endDate}</th>
               <th className="border border-gray-500"></th>
             </tr>
-            {d.tasks.map((a: any, rowIndex: any) => (
-              <tr className="text-center" key={a.id}>
+            {project.tasks.map((task: any, rowIndex: any) => (
+              <tr className="text-center" key={task.id}>
                 <td className="border border-gray-500">
-                  {d.name}
+                  {project.name}
                   {index + rowIndex + 1}
                 </td>
                 <td className="border border-gray-500">
                   <input type="checkbox" />
-                  <span>{a.name}</span>
+                  <span>{task.name}</span>
                 </td>
                 <td className="border border-gray-500">
-                  {a.start.toISOString()}
+                  {task.start.toISOString()}
                 </td>
                 <td className="border border-gray-500">
-                  {a.end.toISOString()}
+                  {task.end.toISOString()}
                 </td>
                 <td className="border border-gray-500"></td>
               </tr>
