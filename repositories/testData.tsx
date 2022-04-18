@@ -13,14 +13,14 @@ export let tasks: any = [
     start: d1,
     end: d2,
     progress: 40,
-    dependencies: "Task 3"
+    dependencies: "Task 3",
   },
   {
     id: "Task 2",
     name: "Task 2",
     start: d3,
     end: d4,
-    progress: null
+    progress: null,
     // dependencies: "Task 1"
   },
   {
@@ -28,7 +28,34 @@ export let tasks: any = [
     name: "Redesign website",
     start: new Date(),
     end: d4,
-    progress: 0
+    progress: 0,
     // dependencies: "Task 2, Task 1"
-  }
+  },
+];
+
+export let tasks2: any = [
+  {
+    id: "Task 1",
+    name: "Task 100",
+    start: d1,
+    end: d2,
+    progress: 100,
+    dependencies: "Task 300",
+  },
+  {
+    id: "Task 2",
+    name: "Task 200",
+    start: d3,
+    end: d4,
+    progress: 100,
+    // dependencies: "Task 1"
+  },
+  {
+    id: "Task 3",
+    name: "Redesign website dane!!!!!!!!!",
+    start: new Date(),
+    end: d4,
+    progress: 100,
+    // dependencies: "Task 2, Task 1"
+  },
 ];

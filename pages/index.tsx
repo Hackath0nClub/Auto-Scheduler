@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import TableView from "../components/tableVIew";
 import Gantt from "../components/Gantt";
-import { ScheduleDataContext } from "../components/scheduleDataProvider";
+import { ScheduleDataProvider } from "../components/scheduleDataProvider";
 import { tasks } from "../repositories/testData";
 
 const Home: NextPage = () => {
@@ -17,10 +17,10 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <ScheduleDataContext.Provider value={tasks}>
+        <ScheduleDataProvider>
           <TableView />
           <Gantt />
-        </ScheduleDataContext.Provider>
+        </ScheduleDataProvider>
       </main>
     </div>
   );
