@@ -5,7 +5,6 @@ import styles from "../styles/Home.module.css";
 import TableView from "../components/tableVIew";
 import Gantt from "../components/Gantt";
 import { ScheduleDataProvider } from "../components/scheduleDataProvider";
-import { tasks } from "../repositories/testData";
 
 const Home: NextPage = () => {
   return (

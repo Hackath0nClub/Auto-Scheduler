@@ -6,30 +6,70 @@ d3.setDate(d3.getDate() + 8);
 let d4 = new Date();
 d4.setDate(d4.getDate() + 20);
 
-export let tasks: any = [
+export let projects: any = [
   {
-    id: "Task 1",
-    name: "Task 1",
-    start: d1,
-    end: d2,
-    progress: 40,
-    dependencies: "Task 3",
+    id: 1,
+    name: "projectA",
+    startDate: "4/1",
+    endDate: "4/12",
+    tasks: [
+      {
+        id: "Task 1",
+        name: "Task 1",
+        start: d1,
+        end: d2,
+        progress: 40,
+        dependencies: "Task 3",
+      },
+      {
+        id: "Task 2",
+        name: "Task 2",
+        start: d3,
+        end: d4,
+        progress: null,
+        // dependencies: "Task 1"
+      },
+      {
+        id: "Task 3",
+        name: "Redesign website",
+        start: new Date(),
+        end: d4,
+        progress: 0,
+        // dependencies: "Task 2, Task 1"
+      },
+    ],
   },
   {
-    id: "Task 2",
-    name: "Task 2",
-    start: d3,
-    end: d4,
-    progress: null,
-    // dependencies: "Task 1"
-  },
-  {
-    id: "Task 3",
-    name: "Redesign website",
-    start: new Date(),
-    end: d4,
-    progress: 0,
-    // dependencies: "Task 2, Task 1"
+    id: 2,
+    name: "projectB",
+    startDate: "4/1",
+    endDate: "4/12",
+    tasks: [
+      {
+        id: "Task 1",
+        name: "Task 10 !!",
+        start: d1,
+        end: d2,
+        progress: 40,
+        dependencies: "Task 3",
+      },
+      {
+        id: "Task 2",
+        name: "Task 20 !!",
+        start: d3,
+        end: d4,
+        progress: null,
+        // dependencies: "Task 1"
+      },
+      {
+        id: "Task 3",
+        name: "Redesign website !!!!",
+        start: new Date(),
+        end: d4,
+        progress: 0,
+        // dependencies: "Task 2, Task 1"
+      },
+    ],
   },
 ];
 
