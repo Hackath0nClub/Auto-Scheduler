@@ -2,9 +2,20 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
+// <<<<<<< HEAD
 import TableView from "../components/TableVIew";
 import Gantt from "../components/Gantt";
 import { ScheduleDataProvider } from "../components/ScheduleDataProvider";
+//=======
+// import TableView from "../components/tableVIew";
+// import Gantt from "../components/Gantt";
+import { ScheduleDataProvider } from "../components/scheduleDataProvider";
+import dynamic from "next/dynamic";
+const DhtmlxGantt = dynamic(() => import("../components/DhtmlxGantt"), {
+  ssr: false,
+});
+import { projects } from "../repositories/testData";
+//>>>>>>> dhtmlx-gantt導入して表示
 
 const Home: NextPage = () => {
   return (
@@ -17,8 +28,9 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <ScheduleDataProvider>
-          <TableView />
-          <Gantt />
+          {/* <TableView /> */}
+          {/* <Gantt /> */}
+          <DhtmlxGantt tasks={projects} />
         </ScheduleDataProvider>
       </main>
     </div>
