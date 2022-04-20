@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { FrappeGantt } from "frappe-gantt-react";
 import React, { useContext } from "react";
-import { ScheduleDataContext } from "./scheduleDataProvider";
+import { ScheduleDataContext } from "./ScheduleDataProvider";
 
 const Gantt: NextPage = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);

@@ -2,9 +2,9 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import TableView from "../components/tableVIew";
+import TableView from "../components/TableVIew";
 import Gantt from "../components/Gantt";
-import { ScheduleDataProvider } from "../components/scheduleDataProvider";
+import { ScheduleDataProvider } from "../components/ScheduleDataProvider";
 
 const Home: NextPage = () => {
   return (

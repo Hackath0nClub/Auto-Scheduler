@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import React, { useContext } from "react";
 import tableStyles from "../styles/table.module.scss";
-import { ScheduleDataContext } from "./scheduleDataProvider";
+import { ScheduleDataContext } from "./ScheduleDataProvider";
 
 const TableView: NextPage = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
