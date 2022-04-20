@@ -2,20 +2,14 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-// <<<<<<< HEAD
-import TableView from "../components/TableVIew";
-import Gantt from "../components/Gantt";
-import { ScheduleDataProvider } from "../components/ScheduleDataProvider";
-//=======
-// import TableView from "../components/tableVIew";
+// import TableView from "../components/TableVIew";
 // import Gantt from "../components/Gantt";
-import { ScheduleDataProvider } from "../components/scheduleDataProvider";
+import { ScheduleDataProvider } from "../components/ScheduleDataProvider";
 import dynamic from "next/dynamic";
 const DhtmlxGantt = dynamic(() => import("../components/DhtmlxGantt"), {
   ssr: false,
 });
 import { projects } from "../repositories/testData";
-//>>>>>>> dhtmlx-gantt導入して表示
 
 const Home: NextPage = () => {
   return (
