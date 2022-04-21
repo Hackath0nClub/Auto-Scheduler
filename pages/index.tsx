@@ -24,7 +24,7 @@ const Home: NextPage = () => {
         <ScheduleDataProvider>
           {/* <TableView /> */}
           {/* <Gantt /> */}
-          <DhtmlxGantt tasks={projects} />
+          <DhtmlxGantt />
         </ScheduleDataProvider>
       </main>
     </div>
