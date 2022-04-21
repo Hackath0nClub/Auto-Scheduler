@@ -1,10 +1,11 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import TableView from "../components/TableVIew";
-import Gantt from "../components/Gantt";
 import { ScheduleDataProvider } from "../components/ScheduleDataProvider";
+import dynamic from "next/dynamic";
+const Gantt = dynamic(() => import("../components/Gantt"), {
+  ssr: false,
+});
 
 const Home: NextPage = () => {
   return (
@@ -17,7 +18,6 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <ScheduleDataProvider>
-          <TableView />
           <Gantt />
         </ScheduleDataProvider>
       </main>
