@@ -3,7 +3,7 @@ import { gantt } from "dhtmlx-gantt";
 import "dhtmlx-gantt/codebase/dhtmlxgantt.css";
 import { ScheduleDataContext } from "./ScheduleDataProvider";
 
-class Gantt extends Component {
+class DhtmlxGantt extends Component {
   componentDidMount() {
     gantt.config.date_format = "%Y-%m-%d %H:%i";
     const { tasks } = this.props;
@@ -23,14 +23,14 @@ class Gantt extends Component {
   }
 }
 
-const DhtmlxGantt = () => {
+const Gantt = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
 
   return (
     <>
-      <Gantt tasks={scheduleData} />
+      <DhtmlxGantt tasks={scheduleData} />
     </>
   );
 };
 
-export default DhtmlxGantt;
+export default Gantt;

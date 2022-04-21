@@ -3,7 +3,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { ScheduleDataProvider } from "../components/ScheduleDataProvider";
 import dynamic from "next/dynamic";
-const DhtmlxGantt = dynamic(() => import("../components/DhtmlxGantt"), {
+const Gantt = dynamic(() => import("../components/Gantt"), {
   ssr: false,
 });
 
@@ -18,7 +18,7 @@ const Home: NextPage = () => {
 
       <main className={styles.main}>
         <ScheduleDataProvider>
-          <DhtmlxGantt />
+          <Gantt />
         </ScheduleDataProvider>
       </main>
     </div>
