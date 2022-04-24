@@ -58,7 +58,8 @@ const Gantt = () => {
 
   const logDataUpdate = () => {
     let updateData = gantt.serialize();
-    console.log(updateData);
+    setScheduleData(updateData);
+    console.log(scheduleData);
   };
 
   return <DhtmlxGantt tasks={scheduleData} onDataUpdated={logDataUpdate} />;
