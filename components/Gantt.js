@@ -56,13 +56,13 @@ class DhtmlxGantt extends Component {
 const Gantt = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
 
-  const logDataUpdate = () => {
+  const dataUpdate = () => {
     let updateData = gantt.serialize();
     setScheduleData(updateData);
     console.log(scheduleData);
   };
 
-  return <DhtmlxGantt tasks={scheduleData} onDataUpdated={logDataUpdate} />;
+  return <DhtmlxGantt tasks={scheduleData} onDataUpdated={dataUpdate} />;
 };
 
 export default Gantt;
