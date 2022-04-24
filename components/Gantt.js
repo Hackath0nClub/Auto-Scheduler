@@ -6,11 +6,39 @@ import { ScheduleDataContext } from "./ScheduleDataProvider";
 // DHTMLXのブログに従って導入
 // https://dhtmlx.com/blog/create-react-gantt-chart-component-dhtmlxgantt/?utm_source=trial_html&utm_medium=referral&utm_campaign=gantt
 class DhtmlxGantt extends Component {
+  // instance of gantt.dataProcessor
+  dataProcessor = null;
+
+  initGanttDataProcessor() {
+    /**
+     * type: "task"|"link"
+     * action: "create"|"update"|"delete"
+     * item: data object object
+     */
+    const onDataUpdated = this.props.onDataUpdated;
+    this.dataProcessor = gantt.createDataProcessor((type, action, item, id) => {
+      return new Promise((resolve, reject) => {
+        if (onDataUpdated) {
+          onDataUpdated(type, action, item, id);
+        }
+        return resolve();
+      });
+    });
+  }
+
   componentDidMount() {
     gantt.config.date_format = "%Y-%m-%d %H:%i";
     const { tasks } = this.props;
     gantt.init(this.ganttContainer);
+    this.initGanttDataProcessor();
     gantt.parse(tasks);
+  }
+
+  componentWillUnmount() {
+    if (this.dataProcessor) {
+      this.dataProcessor.destructor();
+      this.dataProcessor = null;
+    }
   }
 
   render() {
@@ -27,7 +55,17 @@ class DhtmlxGantt extends Component {
 
 const Gantt = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
-  return <DhtmlxGantt tasks={scheduleData} />;
+
+  const logDataUpdate = (type, action, item, id) => {
+    let text = item && item.text ? ` (${item.text})` : "";
+    let message = `${type} ${action}: ${id} ${text}`;
+    if (type === "link" && action !== "delete") {
+      message += ` ( source: ${item.source}, target: ${item.target} )`;
+    }
+    console.log(message);
+  };
+
+  return <DhtmlxGantt tasks={scheduleData} onDataUpdated={logDataUpdate} />;
 };
 
 export default Gantt;
