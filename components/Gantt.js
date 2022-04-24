@@ -16,10 +16,10 @@ class DhtmlxGantt extends Component {
      * item: data object object
      */
     const onDataUpdated = this.props.onDataUpdated;
-    this.dataProcessor = gantt.createDataProcessor((type, action, item, id) => {
+    this.dataProcessor = gantt.createDataProcessor(() => {
       return new Promise((resolve, reject) => {
         if (onDataUpdated) {
-          onDataUpdated(type, action, item, id);
+          onDataUpdated();
         }
         return resolve();
       });
@@ -57,12 +57,8 @@ const Gantt = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
 
   const logDataUpdate = (type, action, item, id) => {
-    let text = item && item.text ? ` (${item.text})` : "";
-    let message = `${type} ${action}: ${id} ${text}`;
-    if (type === "link" && action !== "delete") {
-      message += ` ( source: ${item.source}, target: ${item.target} )`;
-    }
-    console.log(message);
+    let updateData = gantt.serialize();
+    console.log(updateData);
   };
 
   return <DhtmlxGantt tasks={scheduleData} onDataUpdated={logDataUpdate} />;
