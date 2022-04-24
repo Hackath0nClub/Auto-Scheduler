@@ -56,7 +56,7 @@ class DhtmlxGantt extends Component {
 const Gantt = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
 
-  const logDataUpdate = (type, action, item, id) => {
+  const logDataUpdate = () => {
     let updateData = gantt.serialize();
     console.log(updateData);
   };
