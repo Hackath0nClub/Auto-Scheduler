@@ -9,6 +9,7 @@ class DhtmlxGantt extends Component {
   componentDidMount() {
     gantt.config.date_format = "%Y-%m-%d %H:%i";
     const { tasks } = this.props;
+    gantt.i18n.setLocale("jp");
     gantt.init(this.ganttContainer);
     gantt.parse(tasks);
   }
