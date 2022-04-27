@@ -10,6 +10,14 @@ class DhtmlxGantt extends Component {
     gantt.config.date_format = "%Y-%m-%d %H:%i";
     const { tasks } = this.props;
     gantt.i18n.setLocale("jp");
+    gantt.config.columns = [
+      {name:"number", label:"", width:20 },
+      {name:"text", label:"件名", width:200, tree:true, align:"center" },
+      {name:"start_date", label:"開始", align:"center", width:100 },
+      {name:"end_date", label:"終了", align:"center", width:100 },
+      {name:"", label:"先行タスク", width:200 },
+      {name:"add", label:"", width:30 }
+    ];
     gantt.init(this.ganttContainer);
     gantt.parse(tasks);
   }
