@@ -2,12 +2,14 @@ version: "3"
 services:
   react_app:
     image: node:18-alpine
-    environment:
-      - NODE_ENV=production
     volumes:
       - ./react_app:/usr/src/app
+      - node_modules_volume:/usr/src/app/node_modules
     stdin_open: true
     tty: true
     ports:
-      - "8080:8080"
+      - "3000:3000"
     working_dir: /usr/src/app
+
+volumes:
+  node_modules_volume:
