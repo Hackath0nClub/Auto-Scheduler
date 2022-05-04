@@ -10,6 +10,7 @@ services:
     ports:
       - "3000:3000"
     working_dir: /usr/src/app
+    command: sh -c "yarn install && yarn dev"
 
 volumes:
   node_modules_volume:
