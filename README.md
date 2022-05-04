@@ -13,7 +13,7 @@ localhost〇〇/ganttのページを見にいけば確認できます。</br>
 
 ## docker-compose
 
-### 必要ソフトs
+### 必要ソフト
 
 - Docker
 - docker-compose
