@@ -1,0 +1,16 @@
+version: "3"
+services:
+  react_app:
+    image: node:18-alpine
+    volumes:
+      - ./react_app:/usr/src/app
+      - node_modules_volume:/usr/src/app/node_modules
+    stdin_open: true
+    tty: true
+    ports:
+      - "3000:3000"
+    working_dir: /usr/src/app
+    command: sh -c "yarn install && yarn dev"
+
+volumes:
+  node_modules_volume:

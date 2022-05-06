@@ -11,3 +11,41 @@ localhost〇〇/ganttのページを見にいけば確認できます。</br>
 また、ドラッグあんどドロップは実装できていないので</br>
 こちらもjs側で
 
+## docker-compose
+
+### 必要ソフト
+
+- Docker
+- docker-compose
+
+### 使い方
+
+#### 起動
+
+```
+docker-compose up -d
+```
+
+#### 停止
+
+```
+docker-compose down
+# ボリュームも削除する場合は以下
+# docker-compose down -v
+```
+
+#### コンテナへの入り方
+
+```
+docker-compose exec react_app sh
+```
+
+#### ログ
+
+```
+docker-compose logs -f react_app
+```
+
+#### デプロイURL
+
+<http://localhost:3000/>
