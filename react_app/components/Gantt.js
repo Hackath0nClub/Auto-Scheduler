@@ -31,12 +31,12 @@ class DhtmlxGantt extends Component {
     const { tasks } = this.props;
     gantt.i18n.setLocale("jp");
     gantt.config.columns = [
-      {name:"number", label:"", width:20 },
-      {name:"text", label:"件名", width:200, tree:true, align:"center" },
-      {name:"start_date", label:"開始", align:"center", width:100 },
-      {name:"end_date", label:"終了", align:"center", width:100 },
-      {name:"", label:"先行タスク", width:200 },
-      {name:"add", label:"", width:30 }
+      { name: "number", label: "", width: 20 },
+      { name: "text", label: "件名", width: 200, tree: true, align: "center" },
+      { name: "start_date", label: "開始", align: "center", width: 100 },
+      { name: "end_date", label: "終了", align: "center", width: 100 },
+      { name: "", label: "先行タスク", width: 200 },
+      { name: "add", label: "", width: 30 },
     ];
     gantt.init(this.ganttContainer);
     this.initGanttDataProcessor();
@@ -56,7 +56,7 @@ class DhtmlxGantt extends Component {
         ref={(input) => {
           this.ganttContainer = input;
         }}
-        style={{ width: "100%", height: "100vh" }}
+        style={{ width: "100%", height: "80vh" }}
       ></div>
     );
   }
@@ -67,17 +67,17 @@ const Gantt = () => {
 
   const logDataUpdate = () => {
     const updateData = gantt.serialize();
-    console.log("gantt.serialize",updateData);
     setScheduleData(updateData);
-    // console.log(scheduleData.data[5].start_date);
-    console.log("useState", scheduleData);
   };
+
+  console.log(scheduleData);
 
   return (
     <>
-    <DhtmlxGantt tasks={scheduleData} onDataUpdated={logDataUpdate} />;
+      <DhtmlxGantt tasks={scheduleData} onDataUpdated={logDataUpdate} />
+      {/* <p>{JSON.stringify(scheduleData)}</p> */}
     </>
-  )
+  );
 };
 
 export default Gantt;
