@@ -2,6 +2,7 @@ import React, { Component, useContext } from "react";
 import { gantt } from "dhtmlx-gantt";
 import "dhtmlx-gantt/codebase/dhtmlxgantt.css";
 import { ScheduleDataContext } from "./ScheduleDataProvider";
+import { Logger } from "sass";
 
 // DHTMLXのブログに従って導入
 // https://dhtmlx.com/blog/create-react-gantt-chart-component-dhtmlxgantt/?utm_source=trial_html&utm_medium=referral&utm_campaign=gantt
@@ -66,16 +67,50 @@ const Gantt = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
 
   const logDataUpdate = () => {
-    const updateData = gantt.serialize();
-    setScheduleData(updateData);
+    // const updateData = gantt.serialize();
+    // setScheduleData(updateData);
   };
 
-  console.log(scheduleData);
+  // console.log(scheduleData);
+
+  const searchRecursiveToTarget = (id) => {
+    // const links = gantt.getLinks();
+    // const dependLinks = links.filter((link) => link.source == id);
+    // // if (dependLinks == {}) return [];
+    // // else {
+    // //   dependLinks.forEach((element) => {
+    // //     console.log(element);
+    // //     // searchRecursiveToTarget(element.id);
+    // //   });
+    // // }
+    // const targetIds = dependLinks.map((dependLink) => dependLink.target);
+    // return targetIds;
+  };
+
+  const searchDependLinks = (id) => {
+    const targetIds = searchRecursiveToTarget(id);
+    console.log(targetIds);
+  };
+
+  let beforStartDate;
+  let AfterStartDate;
+
+  gantt.attachEvent("onBeforeTaskDrag", function (id) {
+    beforStartDate = gantt.getTask(id).start_date;
+    return true;
+  });
+
+  gantt.attachEvent("onAfterTaskDrag", function (id) {
+    AfterStartDate = gantt.getTask(id).start_date;
+    console.log(beforStartDate - AfterStartDate);
+    searchDependLinks(id);
+  });
 
   return (
     <>
-      <DhtmlxGantt tasks={scheduleData} onDataUpdated={logDataUpdate} />
-      {/* <p>{JSON.stringify(scheduleData)}</p> */}
+      {/* <DhtmlxGantt tasks={scheduleData} onDataUpdated={logDataUpdate} /> */}
+      <DhtmlxGantt tasks={scheduleData} />
+      <p>{JSON.stringify(scheduleData)}</p>
     </>
   );
 };
