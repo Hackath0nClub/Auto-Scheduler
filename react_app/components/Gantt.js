@@ -2,7 +2,6 @@ import React, { Component, useContext } from "react";
 import { gantt } from "dhtmlx-gantt";
 import "dhtmlx-gantt/codebase/dhtmlxgantt.css";
 import { ScheduleDataContext } from "./ScheduleDataProvider";
-import { Logger } from "sass";
 
 // DHTMLXのブログに従って導入
 // https://dhtmlx.com/blog/create-react-gantt-chart-component-dhtmlxgantt/?utm_source=trial_html&utm_medium=referral&utm_campaign=gantt
@@ -73,37 +72,59 @@ const Gantt = () => {
 
   // console.log(scheduleData);
 
+  let targetIds = [];
+  let beforStartDate;
+  let afterStartDate;
+
   const searchRecursiveToTarget = (id) => {
-    // const links = gantt.getLinks();
-    // const dependLinks = links.filter((link) => link.source == id);
-    // // if (dependLinks == {}) return [];
-    // // else {
-    // //   dependLinks.forEach((element) => {
-    // //     console.log(element);
-    // //     // searchRecursiveToTarget(element.id);
-    // //   });
-    // // }
-    // const targetIds = dependLinks.map((dependLink) => dependLink.target);
-    // return targetIds;
+    const links = gantt.getLinks();
+    const dependLinks = links.filter((link) => link.source == id);
+    if (dependLinks == {}) return [];
+    else {
+      dependLinks.map((link) => {
+        searchRecursiveToTarget(link.target);
+      });
+    }
+    dependLinks.map((dependLink) => targetIds.push(dependLink.target));
   };
 
   const searchDependLinks = (id) => {
-    const targetIds = searchRecursiveToTarget(id);
+    searchRecursiveToTarget(id);
     console.log(targetIds);
   };
 
-  let beforStartDate;
-  let AfterStartDate;
+  const createUpdateData = () => {
+    const currentData = gantt.serialize();
+    const dragDays = afterStartDate - beforStartDate;
+    console.log(dragDays);
+    const updateData = currentData.data.map((task) => {
+      if (targetIds.includes(task.id)) {
+        let startDate = Date.parse(task.start_date);
+        let endDate = Date.parse(task.end_date);
+        task.start_date = new Date(startDate + dragDays);
+        task.end_date = new Date(endDate + dragDays);
+        console.log("task", task);
+        return task;
+      } else {
+        return task;
+      }
+    });
+    console.log("updateData", updateData);
+    return updateData;
+  };
 
   gantt.attachEvent("onBeforeTaskDrag", function (id) {
+    targetIds = [];
     beforStartDate = gantt.getTask(id).start_date;
     return true;
   });
 
   gantt.attachEvent("onAfterTaskDrag", function (id) {
-    AfterStartDate = gantt.getTask(id).start_date;
-    console.log(beforStartDate - AfterStartDate);
+    afterStartDate = gantt.getTask(id).start_date;
+    console.log(beforStartDate - afterStartDate);
     searchDependLinks(id);
+    const updateData = createUpdateData();
+    setScheduleData(updateData);
   });
 
   return (
