@@ -90,13 +90,11 @@ const Gantt = () => {
 
   const searchDependLinks = (id) => {
     searchRecursiveToTarget(id);
-    console.log(targetIds);
   };
 
   const createUpdateData = () => {
     const currentData = gantt.serialize();
     const dragDays = afterStartDate - beforStartDate;
-    console.log(dragDays);
     const updateData = currentData.data.map((task) => {
       if (targetIds.includes(task.id)) {
         // let startDate = Date.parse(task.start_date);
@@ -108,13 +106,11 @@ const Gantt = () => {
         task.end_date = formatFunc(
           gantt.date.add(task.end_date, dragDays / 60000, "minute")
         );
-        console.log("task", task);
         return task;
       } else {
         return task;
       }
     });
-    console.log("updateData", updateData);
     return updateData;
   };
 
@@ -126,11 +122,24 @@ const Gantt = () => {
 
   gantt.attachEvent("onAfterTaskDrag", function (id) {
     afterStartDate = gantt.getTask(id).start_date;
-    console.log(beforStartDate - afterStartDate);
     searchDependLinks(id);
     const updateData = createUpdateData();
     setScheduleData(updateData);
+    const dragDays = afterStartDate - beforStartDate;
+      var tasks = gantt.getTaskByTime();
+      for(var i = 0; i < tasks.length; i++){
+        gantt.batchUpdate(function () {
+        var task = tasks[i];
+        if (targetIds.includes(task.id)) {
+        task.start_date = gantt.date.add(task.start_date, dragDays / 86400000, "day");
+        console.log(dragDays);
+        task.end_date = gantt.date.add(task.end_date, dragDays / 86400000, "day");
+        gantt.updateTask(task.id);
+        }
+      });
+      }
   });
+
 
   return (
     <>
