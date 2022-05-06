@@ -9,22 +9,22 @@ class DhtmlxGantt extends Component {
   // instance of gantt.dataProcessor
   dataProcessor = null;
 
-  initGanttDataProcessor() {
-    /**
-     * type: "task"|"link"
-     * action: "create"|"update"|"delete"
-     * item: data object object
-     */
-    const onDataUpdated = this.props.onDataUpdated;
-    this.dataProcessor = gantt.createDataProcessor(() => {
-      return new Promise((resolve, reject) => {
-        if (onDataUpdated) {
-          onDataUpdated();
-        }
-        return resolve();
-      });
-    });
-  }
+  // initGanttDataProcessor() {
+  //   /**
+  //    * type: "task"|"link"
+  //    * action: "create"|"update"|"delete"
+  //    * item: data object object
+  //    */
+  //   const onDataUpdated = this.props.onDataUpdated;
+  //   this.dataProcessor = gantt.createDataProcessor(() => {
+  //     return new Promise((resolve, reject) => {
+  //       if (onDataUpdated) {
+  //         onDataUpdated();
+  //       }
+  //       return resolve();
+  //     });
+  //   });
+  // }
 
   componentDidMount() {
     gantt.config.date_format = "%Y-%m-%d %H:%i";
@@ -39,16 +39,16 @@ class DhtmlxGantt extends Component {
       { name: "add", label: "", width: 30 },
     ];
     gantt.init(this.ganttContainer);
-    this.initGanttDataProcessor();
+    // this.initGanttDataProcessor();
     gantt.parse(tasks);
   }
 
-  componentWillUnmount() {
-    if (this.dataProcessor) {
-      this.dataProcessor.destructor();
-      this.dataProcessor = null;
-    }
-  }
+  // componentWillUnmount() {
+  //   if (this.dataProcessor) {
+  //     this.dataProcessor.destructor();
+  //     this.dataProcessor = null;
+  //   }
+  // }
 
   render() {
     return (
@@ -99,10 +99,15 @@ const Gantt = () => {
     console.log(dragDays);
     const updateData = currentData.data.map((task) => {
       if (targetIds.includes(task.id)) {
-        let startDate = Date.parse(task.start_date);
-        let endDate = Date.parse(task.end_date);
-        task.start_date = new Date(startDate + dragDays);
-        task.end_date = new Date(endDate + dragDays);
+        // let startDate = Date.parse(task.start_date);
+        // let endDate = Date.parse(task.end_date);
+        const formatFunc = gantt.date.date_to_str("%Y-%m-%d 00:00");
+        task.start_date = formatFunc(
+          gantt.date.add(task.start_date, dragDays / 60000, "minute")
+        );
+        task.end_date = formatFunc(
+          gantt.date.add(task.end_date, dragDays / 60000, "minute")
+        );
         console.log("task", task);
         return task;
       } else {
