@@ -66,12 +66,18 @@ const Gantt = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
 
   const logDataUpdate = () => {
-    let updateData = gantt.serialize();
+    const updateData = gantt.serialize();
+    console.log("gantt.serialize",updateData);
     setScheduleData(updateData);
-    console.log(scheduleData);
+    // console.log(scheduleData.data[5].start_date);
+    console.log("useState", scheduleData);
   };
 
-  return <DhtmlxGantt tasks={scheduleData} onDataUpdated={logDataUpdate} />;
+  return (
+    <>
+    <DhtmlxGantt tasks={scheduleData} onDataUpdated={logDataUpdate} />;
+    </>
+  )
 };
 
 export default Gantt;
