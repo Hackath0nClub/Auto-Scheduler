@@ -16,19 +16,17 @@ const Gantt = () => {
     return targetIds;
   };
 
-  const addTaskDate = (task: any, date: number) => {
+  const addDate = (targetDate: any, dragDate: number) => {
     const formatFunc = gantt.date.date_to_str("%Y-%m-%d %H:%i");
-    const addDate = (tgt: any) => gantt.date.add(tgt, date / 60000, "minute");
-    task.start_date = formatFunc(addDate(task.start_date));
-    task.end_date = formatFunc(addDate(task.end_date));
-    return task;
+    return formatFunc(gantt.date.add(targetDate, dragDate / 60000, "minute"));
   };
 
   const createUpdateData = (linkIds: number[], dragDate: number) => {
     const ganttData = gantt.serialize();
     ganttData.data = ganttData.data.map((task: any) => {
       if (linkIds.includes(task.id)) {
-        task = addTaskDate(task, dragDate);
+        task.start_date = addDate(task.start_date, dragDate);
+        task.end_date = addDate(task.end_date, dragDate);
       }
       return task;
     });
