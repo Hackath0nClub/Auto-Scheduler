@@ -8,11 +8,11 @@ const Gantt = () => {
 
   const searchDependLinks = (id: number, targetIds: number[]) => {
     const dependLinks = gantt.getLinks().filter((link) => link.source == id);
+    dependLinks.map((dependLink) => targetIds.push(dependLink.target));
     // 依存するIDを全て取得するまで(リンク先が得られなくなるまで)再帰呼び出しを行う
     if (dependLinks != []) {
       dependLinks.map((link) => searchDependLinks(link.target, targetIds));
     }
-    dependLinks.map((dependLink) => targetIds.push(dependLink.target));
     return targetIds;
   };
 
@@ -23,6 +23,7 @@ const Gantt = () => {
 
   const createUpdateData = (linkIds: number[], dragDate: number) => {
     const ganttData = gantt.serialize();
+    console.log(ganttData);
     ganttData.data = ganttData.data.map((task: any) => {
       if (linkIds.includes(task.id)) {
         task.start_date = addDate(task.start_date, dragDate);
@@ -62,6 +63,7 @@ const Gantt = () => {
     gantt.init("gantt");
     gantt.attachEvent("onBeforeTaskDrag", (id) => setBeforStartDate(id), {});
     gantt.attachEvent("onAfterTaskDrag", (id) => updateScheduleData(id), {});
+    // gantt.attachEvent("onAfterLinkUpdate", (id) => updateScheduleData(id), {});
   };
 
   const renderGantt = () => {
