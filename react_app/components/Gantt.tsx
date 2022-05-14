@@ -8,6 +8,7 @@ const Gantt = () => {
 
   const searchDependLinks = (id: number, targetIds: number[]) => {
     const dependLinks = gantt.getLinks().filter((link) => link.source == id);
+    // 依存するIDとその子タスクのIDをtargetIds[]に追加する
     dependLinks.map((dependLink) => {
       targetIds.push(dependLink.target);
       gantt.eachTask((child) => targetIds.push(child.id), dependLink.target);
