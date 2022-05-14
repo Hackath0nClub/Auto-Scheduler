@@ -8,7 +8,10 @@ const Gantt = () => {
 
   const searchDependLinks = (id: number, targetIds: number[]) => {
     const dependLinks = gantt.getLinks().filter((link) => link.source == id);
-    dependLinks.map((dependLink) => targetIds.push(dependLink.target));
+    dependLinks.map((dependLink) => {
+      targetIds.push(dependLink.target);
+      gantt.eachTask((child) => targetIds.push(child.id), dependLink.target);
+    });
     // 依存するIDを全て取得するまで(リンク先が得られなくなるまで)再帰呼び出しを行う
     if (dependLinks != []) {
       dependLinks.map((link) => searchDependLinks(link.target, targetIds));
