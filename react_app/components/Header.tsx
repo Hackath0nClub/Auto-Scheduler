@@ -1,5 +1,13 @@
+import { useUser } from "@auth0/nextjs-auth0";
+
 export const Header = () => {
-  // return <header>header</header>;
+  const { user, error, isLoading } = useUser();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
+
+  const userEmail = user && user.email;
+
   return (
     <>
       <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
@@ -17,12 +25,19 @@ export const Header = () => {
               GitHub
             </a>
           </div>
+          <p>{userEmail}</p>
           <div>
             <a
               href="/api/auth/login"
-              className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+              className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0 mx-2"
             >
               Login
+            </a>
+            <a
+              href="/api/auth/logout"
+              className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0 mx-2"
+            >
+              Logout
             </a>
           </div>
         </div>
