@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { useUser } from "@auth0/nextjs-auth0";
 
 export const Header = () => {
@@ -55,18 +56,28 @@ export const Header = () => {
     );
   };
 
+  const NavigationBar = ({ children }: { children: ReactNode }) => (
+    <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
+      {children}
+    </nav>
+  );
+
+  const FlexGrow = ({ children }: { children: ReactNode }) => (
+    <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+      {children}
+    </div>
+  );
+
+  const githubUrl = "https://github.com/Hackath0nClub/Auto-Scheduler";
   return (
     <>
-      <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
+      <NavigationBar>
         <Title name="Auto Scheduler" />
-        <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-          <Link
-            name="GitHub"
-            href="https://github.com/Hackath0nClub/Auto-Scheduler"
-          />
+        <FlexGrow>
+          <Link name="GitHub" href={githubUrl} />
           <Auth />
-        </div>
-      </nav>
+        </FlexGrow>
+      </NavigationBar>
     </>
   );
 };
