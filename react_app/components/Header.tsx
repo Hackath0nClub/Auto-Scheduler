@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { useUser } from "@auth0/nextjs-auth0";
 
-export const Header = () => {
+const Header = () => {
   const { user, error, isLoading } = useUser();
 
   const Auth = () => {
@@ -81,3 +81,5 @@ export const Header = () => {
     </>
   );
 };
+
+export default Header;
