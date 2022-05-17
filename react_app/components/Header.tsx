@@ -1,8 +1,43 @@
 import { ReactNode } from "react";
 import { useUser } from "@auth0/nextjs-auth0";
 
-const Header = () => {
+export const Header = () => {
   const { user, error, isLoading } = useUser();
+
+  const NavigationBar = ({ children }: { children: ReactNode }) => (
+    <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
+      {children}
+    </nav>
+  );
+
+  const FlexGrow = ({ children }: { children: ReactNode }) => (
+    <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+      {children}
+    </div>
+  );
+
+  const Title = (props: { name: string }) => {
+    return (
+      <div className="flex items-center flex-shrink-0 text-white mr-6">
+        <span className="font-semibold text-xl tracking-tight">
+          {props.name}
+        </span>
+      </div>
+    );
+  };
+
+  const Link = (props: { name: string; href: string }) => {
+    return (
+      <div className="text-sm lg:flex-grow">
+        <a
+          className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+          href={props.href}
+        >
+          {props.name}
+        </a>
+      </div>
+    );
+  };
 
   const Auth = () => {
     let userEmail: string | null | undefined;
@@ -33,41 +68,6 @@ const Header = () => {
     );
   };
 
-  const Title = (props: { name: string }) => {
-    return (
-      <div className="flex items-center flex-shrink-0 text-white mr-6">
-        <span className="font-semibold text-xl tracking-tight">
-          {props.name}
-        </span>
-      </div>
-    );
-  };
-
-  const Link = (props: { name: string; href: string }) => {
-    return (
-      <div className="text-sm lg:flex-grow">
-        <a
-          className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-          href={props.href}
-        >
-          {props.name}
-        </a>
-      </div>
-    );
-  };
-
-  const NavigationBar = ({ children }: { children: ReactNode }) => (
-    <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
-      {children}
-    </nav>
-  );
-
-  const FlexGrow = ({ children }: { children: ReactNode }) => (
-    <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-      {children}
-    </div>
-  );
-
   const githubUrl = "https://github.com/Hackath0nClub/Auto-Scheduler";
   return (
     <>
@@ -81,5 +81,3 @@ const Header = () => {
     </>
   );
 };
-
-export default Header;
