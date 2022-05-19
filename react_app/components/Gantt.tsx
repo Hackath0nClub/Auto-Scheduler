@@ -8,7 +8,11 @@ const Gantt = () => {
 
   const searchDependLinks = (id: number, targetIds: number[]) => {
     const dependLinks = gantt.getLinks().filter((link) => link.source == id);
-    dependLinks.map((dependLink) => targetIds.push(dependLink.target));
+    // 依存するIDとその子タスクのIDをtargetIds[]に追加する
+    dependLinks.map((dependLink) => {
+      targetIds.push(dependLink.target);
+      gantt.eachTask((child) => targetIds.push(child.id), dependLink.target);
+    });
     // 依存するIDを全て取得するまで(リンク先が得られなくなるまで)再帰呼び出しを行う
     if (dependLinks != []) {
       dependLinks.map((link) => searchDependLinks(link.target, targetIds));
@@ -22,12 +26,17 @@ const Gantt = () => {
   };
 
   const createUpdateData = (linkIds: number[], dragDate: number) => {
-    const ganttData = gantt.serialize();
-    console.log(ganttData);
+    let ganttData = gantt.serialize();
     ganttData.data = ganttData.data.map((task: any) => {
       if (linkIds.includes(task.id)) {
         task.start_date = addDate(task.start_date, dragDate);
         task.end_date = addDate(task.end_date, dragDate);
+      }
+      // 親タスクのdate情報をnullにすることで暗黙的に type: project となり、子タスクdateに依存する
+      if (gantt.hasChild(task.id)) {
+        task.start_date = null;
+        task.end_date = null;
+        task.duration = null;
       }
       return task;
     });
@@ -45,12 +54,13 @@ const Gantt = () => {
     const linkIds = searchDependLinks(id, []);
     const afterStartDate: number = gantt.getTask(id).start_date.getTime();
     const dragDate = afterStartDate - beforStartDate;
-    const updateData = createUpdateData(linkIds, dragDate);
+    let updateData = createUpdateData(linkIds, dragDate);
     setScheduleData(updateData);
   };
 
   const initializeGantt = () => {
     gantt.config.date_format = "%Y-%m-%d %H:%i";
+    gantt.config.drag_project = true;
     gantt.i18n.setLocale("jp");
     gantt.config.columns = [
       { name: "number", label: "", width: 20 },
@@ -63,7 +73,6 @@ const Gantt = () => {
     gantt.init("gantt");
     gantt.attachEvent("onBeforeTaskDrag", (id) => setBeforStartDate(id), {});
     gantt.attachEvent("onAfterTaskDrag", (id) => updateScheduleData(id), {});
-    // gantt.attachEvent("onAfterLinkUpdate", (id) => updateScheduleData(id), {});
   };
 
   const renderGantt = () => {
