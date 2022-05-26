@@ -7,15 +7,21 @@ const Gantt = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
 
   const searchDependLinks = (id: number, targetIds: number[]) => {
-    const dependLinks = gantt.getLinks().filter((link) => link.source == id);
+    // getLinks()で取得するsource, targetがString型なので、numberに変換
+    const dependLinks = gantt.getLinks().map((dependLink) => {
+      dependLink.source = Number(dependLink.source);
+      dependLink.target = Number(dependLink.target);
+      return dependLink;
+    });
+    const matchiDependLinks = dependLinks.filter((link) => link.source == id);
     // 依存するIDとその子タスクのIDをtargetIds[]に追加する
-    dependLinks.map((dependLink) => {
-      targetIds.push(dependLink.target);
-      gantt.eachTask((child) => targetIds.push(child.id), dependLink.target);
+    matchiDependLinks.map((link) => {
+      targetIds.push(link.target);
+      gantt.eachTask((child) => targetIds.push(child.id), link.target);
     });
     // 依存するIDを全て取得するまで(リンク先が得られなくなるまで)再帰呼び出しを行う
-    if (dependLinks != []) {
-      dependLinks.map((link) => searchDependLinks(link.target, targetIds));
+    if (matchiDependLinks != []) {
+      matchiDependLinks.map((link) => searchDependLinks(link.target, targetIds));
     }
     return targetIds;
   };
@@ -46,9 +52,7 @@ const Gantt = () => {
   let beforStartDate: number = 0;
 
   const setBeforStartDate = (id: number) => {
-    console.log("setBeforStartDate", id);
     beforStartDate = gantt.getTask(id).start_date.getTime();
-    console.log("beforStartDate", beforStartDate);
     return true;
   };
 
@@ -67,6 +71,13 @@ const Gantt = () => {
     const afterStartDate: number = lightboxTimeValue.start_date.getTime();
     const dragDate = afterStartDate - beforStartDate;
     let updateData = createUpdateData(linkIds, dragDate);
+    setScheduleData(updateData);
+    return true;
+  };
+
+  const updateScheduleLinks = () => {
+    let updateData = gantt.serialize();
+    console.log(updateData);
     setScheduleData(updateData);
     return true;
   };
@@ -90,6 +101,9 @@ const Gantt = () => {
     // タスク選択フォームからの変更に処理をアタッチ
     gantt.attachEvent("onLightbox", (id) => setBeforStartDate(id), {});
     gantt.attachEvent("onLightboxSave", (id) => updateScheduleDataOnTable(id), {});
+    // リンク操作に処理アタッチ
+    gantt.attachEvent("onAfterLinkAdd", () => updateScheduleLinks(), {});
+    gantt.attachEvent("onAfterLinkDelete", () => updateScheduleLinks(), {});
   };
 
   const renderGantt = () => {
