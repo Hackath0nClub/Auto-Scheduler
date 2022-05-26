@@ -6,16 +6,21 @@ import { ScheduleDataContext } from "./ScheduleDataProvider";
 const Gantt = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
 
-  const searchDependLinks = (id: String, targetIds: String[]) => {
-    const dependLinks = gantt.getLinks().filter((link) => link.source == id);
+  const searchDependLinks = (id: number, targetIds: number[]) => {
+    const dependLinks = gantt.getLinks().map((dependLink) => {
+      dependLink.source = Number(dependLink.source);
+      dependLink.target = Number(dependLink.target);
+      return dependLink;
+    });
+    const matchiDependLinks = dependLinks.filter((link) => link.source == id);
     // 依存するIDとその子タスクのIDをtargetIds[]に追加する
-    dependLinks.map((dependLink) => {
-      targetIds.push(dependLink.target);
-      gantt.eachTask((child) => targetIds.push(child.id), dependLink.target);
+    matchiDependLinks.map((link) => {
+      targetIds.push(link.target);
+      gantt.eachTask((child) => targetIds.push(child.id), link.target);
     });
     // 依存するIDを全て取得するまで(リンク先が得られなくなるまで)再帰呼び出しを行う
-    if (dependLinks != []) {
-      dependLinks.map((link) => searchDependLinks(link.target, targetIds));
+    if (matchiDependLinks != []) {
+      matchiDependLinks.map((link) => searchDependLinks(link.target, targetIds));
     }
     return targetIds;
   };
@@ -25,7 +30,7 @@ const Gantt = () => {
     return formatFunc(gantt.date.add(targetDate, dragDate / 60000, "minute"));
   };
 
-  const createUpdateData = (linkIds: String[], dragDate: number) => {
+  const createUpdateData = (linkIds: number[], dragDate: number) => {
     let ganttData = gantt.serialize();
     ganttData.data = ganttData.data.map((task: any) => {
       if (linkIds.includes(task.id)) {
@@ -45,15 +50,15 @@ const Gantt = () => {
 
   let beforStartDate: number = 0;
 
-  const setBeforStartDate = (id: String) => {
-    beforStartDate = gantt.getTask(Number(id)).start_date.getTime();
+  const setBeforStartDate = (id: number) => {
+    beforStartDate = gantt.getTask(id).start_date.getTime();
     return true;
   };
 
-  const updateScheduleData = (id: String) => {
+  const updateScheduleData = (id: number) => {
     const linkIds = searchDependLinks(id, []);
     console.log("linkIds", linkIds);
-    const afterStartDate: number = gantt.getTask(Number(id)).start_date.getTime();
+    const afterStartDate: number = gantt.getTask(id).start_date.getTime();
     const dragDate = afterStartDate - beforStartDate;
     let updateData = createUpdateData(linkIds, dragDate);
     console.log("updateData", updateData);
@@ -61,7 +66,7 @@ const Gantt = () => {
     return true;
   };
 
-  const updateScheduleDataOnTable = (id: String) => {
+  const updateScheduleDataOnTable = (id: number) => {
     const linkIds = searchDependLinks(id, [id]);
     const lightboxTimeValue = gantt.getLightboxSection("time").getValue();
     const afterStartDate: number = lightboxTimeValue.start_date.getTime();
