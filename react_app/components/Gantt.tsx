@@ -58,11 +58,9 @@ const Gantt = () => {
 
   const updateScheduleData = (id: number) => {
     const linkIds = searchDependLinks(id, []);
-    console.log("linkIds", linkIds);
     const afterStartDate: number = gantt.getTask(id).start_date.getTime();
     const dragDate = afterStartDate - beforStartDate;
     let updateData = createUpdateData(linkIds, dragDate);
-    console.log("updateData", updateData);
     setScheduleData(updateData);
     return true;
   };
