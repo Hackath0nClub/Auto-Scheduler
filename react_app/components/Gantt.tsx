@@ -7,6 +7,7 @@ const Gantt = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
 
   const searchDependLinks = (id: number, targetIds: number[]) => {
+    // getLinks()で取得するsource, targetがString型なので、numberに変換
     const dependLinks = gantt.getLinks().map((dependLink) => {
       dependLink.source = Number(dependLink.source);
       dependLink.target = Number(dependLink.target);
