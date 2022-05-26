@@ -30,8 +30,9 @@ const Gantt = () => {
     return formatFunc(gantt.date.add(targetDate, dragDate / 60000, "minute"));
   };
 
-  const createUpdateData = (linkIds: number[], dragDate: number) => {
-    let ganttData = gantt.serialize();
+  const createUpdateData = (ganttData: any, linkIds: number[], dragDate: number) => {
+    // let ganttData = gantt.serialize();
+    console.log(ganttData);
     ganttData.data = ganttData.data.map((task: any) => {
       if (linkIds.includes(task.id)) {
         task.start_date = addDate(task.start_date, dragDate);
@@ -59,7 +60,8 @@ const Gantt = () => {
     const linkIds = searchDependLinks(id, []);
     const afterStartDate: number = gantt.getTask(id).end_date.getTime();
     const dragDate = afterStartDate - beforStartDate;
-    let updateData = createUpdateData(linkIds, dragDate);
+    let ganttData = gantt.serialize();
+    let updateData = createUpdateData(ganttData, linkIds, dragDate);
     setScheduleData(updateData);
     return true;
   };
@@ -67,9 +69,20 @@ const Gantt = () => {
   const updateScheduleDataOnTable = (id: number) => {
     const linkIds = searchDependLinks(id, [id]);
     const lightboxTimeValue = gantt.getLightboxSection("time").getValue();
+    var descr = gantt.getLightboxSection("description");
+    // console.log(descr.getValue());
     const afterStartDate: number = lightboxTimeValue.start_date.getTime();
     const dragDate = afterStartDate - beforStartDate;
-    let updateData = createUpdateData(linkIds, dragDate);
+    let ganttData = gantt.serialize();
+    console.log(ganttData);
+    ganttData.data = ganttData.data.map((data: any) => {
+      if (data.id == id) {
+        data.text = descr.getValue();
+      }
+      return data;
+    });
+    console.log(ganttData);
+    let updateData = createUpdateData(ganttData, linkIds, dragDate);
     setScheduleData(updateData);
     return true;
   };
