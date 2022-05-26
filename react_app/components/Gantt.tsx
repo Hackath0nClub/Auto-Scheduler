@@ -5,7 +5,6 @@ import { ScheduleDataContext } from "./ScheduleDataProvider";
 
 const Gantt = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
-
   const searchDependLinks = (id: number, targetIds: number[]) => {
     // getLinks()で取得するsource, targetがString型なので、numberに変換
     const dependLinks = gantt.getLinks().map((dependLink) => {
@@ -77,7 +76,6 @@ const Gantt = () => {
 
   const updateScheduleLinks = () => {
     let updateData = gantt.serialize();
-    console.log(updateData);
     setScheduleData(updateData);
     return true;
   };
