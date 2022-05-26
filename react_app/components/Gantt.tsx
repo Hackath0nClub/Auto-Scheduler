@@ -51,13 +51,13 @@ const Gantt = () => {
   let beforStartDate: number = 0;
 
   const setBeforStartDate = (id: number) => {
-    beforStartDate = gantt.getTask(id).start_date.getTime();
+    beforStartDate = gantt.getTask(id).end_date.getTime();
     return true;
   };
 
   const updateScheduleData = (id: number) => {
     const linkIds = searchDependLinks(id, []);
-    const afterStartDate: number = gantt.getTask(id).start_date.getTime();
+    const afterStartDate: number = gantt.getTask(id).end_date.getTime();
     const dragDate = afterStartDate - beforStartDate;
     let updateData = createUpdateData(linkIds, dragDate);
     setScheduleData(updateData);
