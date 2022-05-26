@@ -5,7 +5,6 @@ import { ScheduleDataContext } from "./ScheduleDataProvider";
 
 const Gantt = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
-
   const searchDependLinks = (id: number, targetIds: number[]) => {
     // getLinks()で取得するsource, targetがString型なので、numberに変換
     const dependLinks = gantt.getLinks().map((dependLink) => {
@@ -52,13 +51,13 @@ const Gantt = () => {
   let beforStartDate: number = 0;
 
   const setBeforStartDate = (id: number) => {
-    beforStartDate = gantt.getTask(id).start_date.getTime();
+    beforStartDate = gantt.getTask(id).end_date.getTime();
     return true;
   };
 
   const updateScheduleData = (id: number) => {
     const linkIds = searchDependLinks(id, []);
-    const afterStartDate: number = gantt.getTask(id).start_date.getTime();
+    const afterStartDate: number = gantt.getTask(id).end_date.getTime();
     const dragDate = afterStartDate - beforStartDate;
     let updateData = createUpdateData(linkIds, dragDate);
     setScheduleData(updateData);
@@ -77,7 +76,6 @@ const Gantt = () => {
 
   const updateScheduleLinks = () => {
     let updateData = gantt.serialize();
-    console.log(updateData);
     setScheduleData(updateData);
     return true;
   };
