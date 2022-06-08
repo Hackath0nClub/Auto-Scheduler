@@ -12,15 +12,15 @@ const Gantt = () => {
       dependLink.target = Number(dependLink.target);
       return dependLink;
     });
-    const matchiDependLinks = dependLinks.filter((link) => link.source == id);
+    const matchDependLinks = dependLinks.filter((link) => link.source == id);
     // 依存するIDとその子タスクのIDをtargetIds[]に追加する
-    matchiDependLinks.map((link) => {
+    matchDependLinks.map((link) => {
       targetIds.push(link.target);
       gantt.eachTask((child) => targetIds.push(child.id), link.target);
     });
     // 依存するIDを全て取得するまで(リンク先が得られなくなるまで)再帰呼び出しを行う
-    if (matchiDependLinks != []) {
-      matchiDependLinks.map((link) => searchDependLinks(link.target, targetIds));
+    if (matchDependLinks != []) {
+      matchDependLinks.map((link) => searchDependLinks(link.target, targetIds));
     }
     return targetIds;
   };
