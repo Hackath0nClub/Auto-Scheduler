@@ -52,13 +52,13 @@ const Gantt = () => {
   let beforeStartDate: number = 0;
 
   const setBeforeStartDate = (id: number) => {
-    beforeStartDate = gantt.getTask(id).end_date.getTime();
+    beforeStartDate = gantt.getTask(id).start_date.getTime();
     return true;
   };
 
   const updateScheduleData = (id: number) => {
     const linkIds = searchDependLinks(id, []);
-    const afterStartDate: number = gantt.getTask(id).end_date.getTime();
+    const afterStartDate: number = gantt.getTask(id).start_date.getTime();
     const dragDate = afterStartDate - beforeStartDate;
     let ganttData = gantt.serialize();
     let updateData = createUpdateData(ganttData, linkIds, dragDate);
