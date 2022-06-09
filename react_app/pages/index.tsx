@@ -11,10 +11,6 @@ const Gantt = dynamic(() => import("../components/Gantt"), {
 
 import { useQuery } from "urql";
 
-const env = process.env.NEXT_PUBLIC_TEST;
-console.log(process.env.NEXT_PUBLIC_TEST);
-console.log("env", env);
-
 const BooksQuery = `
   query {
     books {
