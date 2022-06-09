@@ -11,6 +11,10 @@ const Gantt = dynamic(() => import("../components/Gantt"), {
 
 import { useQuery } from "urql";
 
+const env = process.env.NEXT_PUBLIC_TEST;
+console.log(process.env.NEXT_PUBLIC_TEST);
+console.log("env", env);
+
 const BooksQuery = `
   query {
     books {
@@ -19,18 +23,29 @@ const BooksQuery = `
   }
 `;
 
-const BooksMutation = `
-  mutation {
-    registerBook(title: "test", author:"tester") {
-      title
-      author
+const AllProjects = `
+  query AllProjects {
+    allProjects {
+      data {
+        data {
+          duration
+          parent
+          start_date
+          text
+          open
+          id
+          progress
+          end_date
+        }
+      }
     }
   }
 `;
 
 const Books = () => {
   const [result, reexecuteQuery] = useQuery({
-    query: BooksQuery,
+    // query: BooksQuery,
+    query: AllProjects,
   });
 
   const { data, fetching, error } = result;
@@ -38,15 +53,15 @@ const Books = () => {
   if (fetching) return <p>Loading...</p>;
   if (error) return <p>Oh no... {error.message}</p>;
 
-  console.log("books", data);
+  console.log(data);
+  console.log(data.allProjects.data[1].data.text);
+  console.log(data.allProjects.data.map((d: any) => d.data.text));
 
   return (
     <>
-      <ul>
-        {data.books.map((book: { title: any }) => (
-          <li>{book.title}</li>
-        ))}
-      </ul>
+      {data.allProjects.data.map((d: any) => (
+        <p>{d.data.text}</p>
+      ))}
     </>
   );
 };
