@@ -12,15 +12,15 @@ const Gantt = () => {
       dependLink.target = Number(dependLink.target);
       return dependLink;
     });
-    const matchiDependLinks = dependLinks.filter((link) => link.source == id);
+    const matchDependLinks = dependLinks.filter((link) => link.source == id);
     // 依存するIDとその子タスクのIDをtargetIds[]に追加する
-    matchiDependLinks.map((link) => {
+    matchDependLinks.map((link) => {
       targetIds.push(link.target);
       gantt.eachTask((child) => targetIds.push(child.id), link.target);
     });
     // 依存するIDを全て取得するまで(リンク先が得られなくなるまで)再帰呼び出しを行う
-    if (matchiDependLinks != []) {
-      matchiDependLinks.map((link) => searchDependLinks(link.target, targetIds));
+    if (matchDependLinks != []) {
+      matchDependLinks.map((link) => searchDependLinks(link.target, targetIds));
     }
     return targetIds;
   };
@@ -30,8 +30,9 @@ const Gantt = () => {
     return formatFunc(gantt.date.add(targetDate, dragDate / 60000, "minute"));
   };
 
-  const createUpdateData = (linkIds: number[], dragDate: number) => {
-    let ganttData = gantt.serialize();
+  const createUpdateData = (ganttData: any, linkIds: number[], dragDate: number) => {
+    // let ganttData = gantt.serialize();
+    console.log(ganttData);
     ganttData.data = ganttData.data.map((task: any) => {
       if (linkIds.includes(task.id)) {
         task.start_date = addDate(task.start_date, dragDate);
@@ -48,18 +49,19 @@ const Gantt = () => {
     return ganttData;
   };
 
-  let beforStartDate: number = 0;
+  let beforeStartDate: number = 0;
 
-  const setBeforStartDate = (id: number) => {
-    beforStartDate = gantt.getTask(id).end_date.getTime();
+  const setBeforeStartDate = (id: number) => {
+    beforeStartDate = gantt.getTask(id).start_date.getTime();
     return true;
   };
 
   const updateScheduleData = (id: number) => {
     const linkIds = searchDependLinks(id, []);
-    const afterStartDate: number = gantt.getTask(id).end_date.getTime();
-    const dragDate = afterStartDate - beforStartDate;
-    let updateData = createUpdateData(linkIds, dragDate);
+    const afterStartDate: number = gantt.getTask(id).start_date.getTime();
+    const dragDate = afterStartDate - beforeStartDate;
+    let ganttData = gantt.serialize();
+    let updateData = createUpdateData(ganttData, linkIds, dragDate);
     setScheduleData(updateData);
     return true;
   };
@@ -67,9 +69,20 @@ const Gantt = () => {
   const updateScheduleDataOnTable = (id: number) => {
     const linkIds = searchDependLinks(id, [id]);
     const lightboxTimeValue = gantt.getLightboxSection("time").getValue();
+    var descr = gantt.getLightboxSection("description");
+    // console.log(descr.getValue());
     const afterStartDate: number = lightboxTimeValue.start_date.getTime();
-    const dragDate = afterStartDate - beforStartDate;
-    let updateData = createUpdateData(linkIds, dragDate);
+    const dragDate = afterStartDate - beforeStartDate;
+    let ganttData = gantt.serialize();
+    console.log(ganttData);
+    ganttData.data = ganttData.data.map((data: any) => {
+      if (data.id == id) {
+        data.text = descr.getValue();
+      }
+      return data;
+    });
+    console.log(ganttData);
+    let updateData = createUpdateData(ganttData, linkIds, dragDate);
     setScheduleData(updateData);
     return true;
   };
@@ -94,10 +107,10 @@ const Gantt = () => {
     ];
     gantt.init("gantt");
     // タスクドラック操作に処理アタッチ
-    gantt.attachEvent("onBeforeTaskDrag", (id) => setBeforStartDate(id), {});
+    gantt.attachEvent("onBeforeTaskDrag", (id) => setBeforeStartDate(id), {});
     gantt.attachEvent("onAfterTaskDrag", (id) => updateScheduleData(id), {});
     // タスク選択フォームからの変更に処理をアタッチ
-    gantt.attachEvent("onLightbox", (id) => setBeforStartDate(id), {});
+    gantt.attachEvent("onLightbox", (id) => setBeforeStartDate(id), {});
     gantt.attachEvent("onLightboxSave", (id) => updateScheduleDataOnTable(id), {});
     // リンク操作に処理アタッチ
     gantt.attachEvent("onAfterLinkAdd", () => updateScheduleLinks(), {});
