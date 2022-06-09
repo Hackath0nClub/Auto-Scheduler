@@ -77,12 +77,12 @@ const Home: NextPage = () => {
       <UrqlProvider>
         <Books />
       </UrqlProvider>
-      {/* <Header />
+      <Header />
       <main className={styles.main}>
         <ScheduleDataProvider>
           <Gantt />
         </ScheduleDataProvider>
-      </main> */}
+      </main>
     </div>
   );
 };
