@@ -20,18 +20,26 @@ const BooksQuery = `
 `;
 
 const AllProjects = `
-  query AllProjects {
+  query Query {
     allProjects {
       data {
-        data {
-          duration
-          parent
-          start_date
-          text
-          open
-          id
-          progress
-          end_date
+        id
+        name
+        tasks {
+          data {
+            text
+            id
+          }
+        }
+        links {
+          data {
+            source
+            id
+            target
+            project {
+              _id
+            }
+          }
         }
       }
     }
@@ -50,14 +58,14 @@ const Books = () => {
   if (error) return <p>Oh no... {error.message}</p>;
 
   console.log(data);
-  console.log(data.allProjects.data[1].data.text);
-  console.log(data.allProjects.data.map((d: any) => d.data.text));
+  console.log(data.allProjects.data[0].tasks.data[0].text);
+  // console.log(data.allProjects.data.map((d: any) => d.data.text));
 
   return (
     <>
-      {data.allProjects.data.map((d: any) => (
-        <p>{d.data.text}</p>
-      ))}
+      {data.allProjects.data.map((d: any) => {
+        return d.tasks.data.map((d: any) => <p>{d.text}</p>);
+      })}
     </>
   );
 };
