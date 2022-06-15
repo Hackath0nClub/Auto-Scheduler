@@ -97,6 +97,8 @@ const Gantt = () => {
     gantt.config.date_format = "%Y-%m-%d %H:%i";
     gantt.config.drag_project = true;
     gantt.i18n.setLocale("jp");
+    // gantt.config.start_date = new Date("2018, 08, 10");
+    // gantt.config.end_date = new Date("2022, 08, 20");
     gantt.config.columns = [
       { name: "number", label: "", width: 20 },
       { name: "text", label: "件名", width: 200, tree: true, align: "center" },
