@@ -5,6 +5,50 @@ import { ScheduleDataContext } from "./ScheduleDataProvider";
 
 const Gantt = () => {
   const [scheduleData, setScheduleData] = useContext(ScheduleDataContext);
+
+  // ガント初期設定
+  const initializeGantt = () => {
+    gantt.config.date_format = "%Y-%m-%d %H:%i";
+    gantt.config.drag_project = true;
+    gantt.i18n.setLocale("jp");
+
+    const now = new Date();
+    gantt.config.end_date = new Date(now.setFullYear(now.getFullYear() + 1)); // end_dateを先に書かないと正しく描画されない
+    gantt.config.start_date = new Date(now.setFullYear(now.getFullYear() - 1));
+
+    gantt.config.show_tasks_outside_timescale = true;
+    gantt.config.scales = [
+      { unit: "month", step: 1, format: "%Y年%F" },
+      { unit: "day", step: 1, format: "%j日(%D)" },
+    ];
+    gantt.config.columns = [
+      { name: "number", label: "", width: 20 },
+      { name: "text", label: "件名", width: 200, tree: true, align: "center" },
+      { name: "start_date", label: "開始", align: "center", width: 100 },
+      { name: "end_date", label: "終了", align: "center", width: 100 },
+      { name: "", label: "先行タスク", width: 200 },
+      { name: "add", label: "", width: 30 },
+    ];
+    gantt.init("gantt");
+    // タスクドラック操作に処理アタッチ
+    gantt.attachEvent("onBeforeTaskDrag", (id) => setBeforeStartDate(id), {});
+    gantt.attachEvent("onAfterTaskDrag", (id) => updateScheduleData(id), {});
+    // タスク選択フォームからの変更に処理をアタッチ
+    gantt.attachEvent("onLightbox", (id) => setBeforeStartDate(id), {});
+    gantt.attachEvent("onLightboxSave", (id) => updateScheduleDataOnTable(id), {});
+    // リンク操作に処理アタッチ
+    gantt.attachEvent("onAfterLinkAdd", () => updateScheduleLinks(), {});
+    gantt.attachEvent("onAfterLinkDelete", () => updateScheduleLinks(), {});
+  };
+
+  const renderGantt = () => {
+    gantt.parse(scheduleData);
+    gantt.render();
+  };
+
+  useEffect(initializeGantt, []);
+  useEffect(renderGantt, [scheduleData]);
+
   const searchDependLinks = (id: number, targetIds: number[]) => {
     // getLinks()で取得するsource, targetがString型なので、numberに変換
     const dependLinks = gantt.getLinks().map((dependLink) => {
@@ -92,38 +136,6 @@ const Gantt = () => {
     setScheduleData(updateData);
     return true;
   };
-
-  const initializeGantt = () => {
-    gantt.config.date_format = "%Y-%m-%d %H:%i";
-    gantt.config.drag_project = true;
-    gantt.i18n.setLocale("jp");
-    gantt.config.columns = [
-      { name: "number", label: "", width: 20 },
-      { name: "text", label: "件名", width: 200, tree: true, align: "center" },
-      { name: "start_date", label: "開始", align: "center", width: 100 },
-      { name: "end_date", label: "終了", align: "center", width: 100 },
-      { name: "", label: "先行タスク", width: 200 },
-      { name: "add", label: "", width: 30 },
-    ];
-    gantt.init("gantt");
-    // タスクドラック操作に処理アタッチ
-    gantt.attachEvent("onBeforeTaskDrag", (id) => setBeforeStartDate(id), {});
-    gantt.attachEvent("onAfterTaskDrag", (id) => updateScheduleData(id), {});
-    // タスク選択フォームからの変更に処理をアタッチ
-    gantt.attachEvent("onLightbox", (id) => setBeforeStartDate(id), {});
-    gantt.attachEvent("onLightboxSave", (id) => updateScheduleDataOnTable(id), {});
-    // リンク操作に処理アタッチ
-    gantt.attachEvent("onAfterLinkAdd", () => updateScheduleLinks(), {});
-    gantt.attachEvent("onAfterLinkDelete", () => updateScheduleLinks(), {});
-  };
-
-  const renderGantt = () => {
-    gantt.parse(scheduleData);
-    gantt.render();
-  };
-
-  useEffect(initializeGantt, []);
-  useEffect(renderGantt, [scheduleData]);
 
   return (
     <>
