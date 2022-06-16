@@ -12,7 +12,7 @@ export let projects: any = {
     {
       id: 2,
       text: "Task #1",
-      start_date: "2019-08-01 00:00",
+      start_date: "2022-08-01 00:00",
       duration: 5,
       parent: 1,
       progress: 1,
@@ -20,7 +20,7 @@ export let projects: any = {
     {
       id: 3,
       text: "Task #2",
-      start_date: "2019-08-06 00:00",
+      start_date: "2022-08-06 00:00",
       duration: 2,
       parent: 1,
       progress: 0.5,
@@ -37,7 +37,7 @@ export let projects: any = {
     {
       id: 5,
       text: "Task #3.1",
-      start_date: "2019-08-09 00:00",
+      start_date: "2022-08-09 00:00",
       duration: 2,
       parent: 4,
       progress: 0.2,
@@ -45,7 +45,7 @@ export let projects: any = {
     {
       id: 6,
       text: "Task #3.2",
-      start_date: "2019-08-11 00:00",
+      start_date: "2022-08-11 00:00",
       duration: 1,
       parent: 4,
       progress: 0,

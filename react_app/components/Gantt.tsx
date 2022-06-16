@@ -11,12 +11,15 @@ const Gantt = () => {
     gantt.config.date_format = "%Y-%m-%d %H:%i";
     gantt.config.drag_project = true;
     gantt.i18n.setLocale("jp");
-    gantt.config.start_date = new Date("2000, 01, 01");
-    gantt.config.end_date = new Date("2100, 12, 31");
+
+    const now = new Date();
+    gantt.config.end_date = new Date(now.setFullYear(now.getFullYear() + 1)); // end_dateを先に書かないと正しく描画されない
+    gantt.config.start_date = new Date(now.setFullYear(now.getFullYear() - 1));
+
     gantt.config.show_tasks_outside_timescale = true;
     gantt.config.scales = [
-      {unit: "month", step: 1, format: "%Y年%F"},
-      {unit: "day", step:1, format: "%j日(%D)" }
+      { unit: "month", step: 1, format: "%Y年%F" },
+      { unit: "day", step: 1, format: "%j日(%D)" },
     ];
     gantt.config.columns = [
       { name: "number", label: "", width: 20 },
@@ -45,7 +48,6 @@ const Gantt = () => {
 
   useEffect(initializeGantt, []);
   useEffect(renderGantt, [scheduleData]);
-
 
   const searchDependLinks = (id: number, targetIds: number[]) => {
     // getLinks()で取得するsource, targetがString型なので、numberに変換
