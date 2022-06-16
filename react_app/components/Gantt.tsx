@@ -13,10 +13,11 @@ const Gantt = () => {
     gantt.i18n.setLocale("jp");
     gantt.config.start_date = new Date("2000, 01, 01");
     gantt.config.end_date = new Date("2100, 12, 31");
+    gantt.config.show_tasks_outside_timescale = true;
     gantt.config.scales = [
       {unit: "month", step: 1, format: "%Y年%F"},
       {unit: "day", step:1, format: "%j日(%D)" }
-  ];
+    ];
     gantt.config.columns = [
       { name: "number", label: "", width: 20 },
       { name: "text", label: "件名", width: 200, tree: true, align: "center" },
