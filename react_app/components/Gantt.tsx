@@ -13,19 +13,34 @@ const Gantt = () => {
     gantt.i18n.setLocale("jp");
 
     const now = new Date();
-    gantt.config.end_date = new Date(now.setFullYear(now.getFullYear() + 1)); // end_dateを先に書かないと正しく描画されない
-    gantt.config.start_date = new Date(now.setFullYear(now.getFullYear() - 1));
+    const oneYearLater = new Date(now.setFullYear(now.getFullYear() + 1)); // end_dateを先に書かないと正しく描画されない
+    const oneYearAgo = new Date(now.setFullYear(now.getFullYear() - 2));
+    gantt.config.end_date = oneYearLater;
+    gantt.config.start_date = oneYearAgo;
 
     gantt.config.show_tasks_outside_timescale = true;
     gantt.config.scales = [
       { unit: "month", step: 1, format: "%Y年%F" },
       { unit: "day", step: 1, format: "%j日(%D)" },
     ];
+    const textEditor = { type: "text", map_to: "text" };
+    const startDateEditor = {
+      type: "date",
+      map_to: "start_date",
+      min: oneYearAgo,
+      max: oneYearLater,
+    };
+    const endDateEditor = {
+      type: "date",
+      map_to: "end_date",
+      min: oneYearAgo,
+      max: oneYearLater,
+    };
     gantt.config.columns = [
       { name: "number", label: "", width: 20 },
-      { name: "text", label: "件名", width: 200, tree: true, align: "center" },
-      { name: "start_date", label: "開始", align: "center", width: 100 },
-      { name: "end_date", label: "終了", align: "center", width: 100 },
+      { name: "text", label: "件名", width: 200, tree: true, align: "center", editor: textEditor },
+      { name: "start_date", label: "開始", align: "center", width: 100, editor: startDateEditor },
+      { name: "end_date", label: "終了", align: "center", width: 100, editor: endDateEditor },
       { name: "", label: "先行タスク", width: 200 },
       { name: "add", label: "", width: 30 },
     ];
@@ -44,6 +59,7 @@ const Gantt = () => {
   const renderGantt = () => {
     gantt.parse(scheduleData);
     gantt.render();
+    console.log(scheduleData);
   };
 
   useEffect(initializeGantt, []);
