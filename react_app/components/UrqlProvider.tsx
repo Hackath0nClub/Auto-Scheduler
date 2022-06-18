@@ -1,10 +1,6 @@
 import React, { ReactNode } from "react";
 import { createClient, Provider } from "urql";
 
-// const client = createClient({
-//   url: "http://localhost:4000/",
-// });
-
 const client = createClient({
   url: "https://graphql.fauna.com/graphql",
   fetchOptions: () => {

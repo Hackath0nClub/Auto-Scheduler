@@ -11,45 +11,38 @@ const Gantt = dynamic(() => import("../components/Gantt"), {
 
 import { useQuery } from "urql";
 
-const BooksQuery = `
-  query {
-    books {
-      title
-    }
-  }
-`;
-
-const AllProjects = `
-  query Query {
-    allProjects {
-      data {
-        id
-        name
-        tasks {
-          data {
-            text
-            id
-          }
+const findProjectByID = `
+  query FindProjectByID($id: ID!) {
+    findProjectByID(id: $id) {
+      _id
+      name
+      tasks {
+        data {
+          _id
+          text
+          start_date
+          end_date
+          duration
+          progress
+          parent
+          open
         }
-        links {
-          data {
-            source
-            id
-            target
-            project {
-              _id
-            }
-          }
+      }
+      links {
+        data {
+          _id
+          source
+          target
         }
       }
     }
   }
 `;
 
-const Books = () => {
+const Projects = ({ id }: { id: string }) => {
   const [result, reexecuteQuery] = useQuery({
-    // query: BooksQuery,
-    query: AllProjects,
+    query: findProjectByID,
+    variables: { id },
   });
 
   const { data, fetching, error } = result;
@@ -58,14 +51,12 @@ const Books = () => {
   if (error) return <p>Oh no... {error.message}</p>;
 
   console.log(data);
-  console.log(data.allProjects.data[0].tasks.data[0].text);
-  // console.log(data.allProjects.data.map((d: any) => d.data.text));
 
   return (
     <>
-      {data.allProjects.data.map((d: any) => {
+      {/* {data.allProjects.data.map((d: any) => {
         return d.tasks.data.map((d: any) => <p>{d.text}</p>);
-      })}
+      })} */}
     </>
   );
 };
@@ -79,7 +70,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <UrqlProvider>
-        <Books />
+        <Projects id="334725058471658066" />
       </UrqlProvider>
       <Header />
       <main className={styles.main}>
