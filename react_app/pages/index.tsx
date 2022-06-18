@@ -26,6 +26,9 @@ const findProjectByID = `
           progress
           parent
           open
+          project {
+            _id
+          }
         }
       }
       links {
@@ -33,6 +36,9 @@ const findProjectByID = `
           _id
           source
           target
+          project {
+            _id
+          }
         }
       }
     }
@@ -50,7 +56,11 @@ const Projects = ({ id }: { id: string }) => {
   if (fetching) return <p>Loading...</p>;
   if (error) return <p>Oh no... {error.message}</p>;
 
+  data.findProjectByID.tasks.data.forEach((t: any) => (t.id = t._id));
+  data.findProjectByID.links.data.forEach((l: any) => (l.id = l._id));
+
   console.log(data);
+  console.log(data.findProjectByID.tasks.data);
 
   return (
     <>
