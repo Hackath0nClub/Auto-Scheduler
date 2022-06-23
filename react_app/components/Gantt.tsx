@@ -123,6 +123,7 @@ const Gantt = () => {
     let ganttData = gantt.serialize();
     let updateData = createUpdateData(ganttData, linkIds, dragDate);
     setScheduleData(updateData);
+    gantt.config.initial_scroll = false;
     return true;
   };
 
